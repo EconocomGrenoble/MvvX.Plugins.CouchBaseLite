@@ -108,9 +108,9 @@ namespace MvvX.Plugins.CouchBaseLite.Platform
         }
 
 
-        public void PrintDebugLogs(bool printed)
+        public void ManageLog(bool disabled)
         {
-            Log.Disabled = !printed;
+            Log.Disabled = disabled;
         }
 
         public void Dispose()

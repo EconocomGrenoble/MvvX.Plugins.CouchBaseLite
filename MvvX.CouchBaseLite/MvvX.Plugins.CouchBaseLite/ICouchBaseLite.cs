@@ -33,7 +33,7 @@ namespace MvvX.Plugins.CouchBaseLite
         /// <summary>
         /// Change the log visibility
         /// </summary>
-        /// <param name="printed"></param>
-        void PrintDebugLogs(bool printed);
+        /// <param name="disabled"></param>
+        void ManageLog(bool disabled);
     }
 }
