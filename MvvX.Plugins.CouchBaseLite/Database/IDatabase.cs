@@ -1,5 +1,6 @@
 ﻿using MvvX.Plugins.CouchBaseLite.Documents;
 using MvvX.Plugins.CouchBaseLite.Queries;
+using MvvX.Plugins.CouchBaseLite.Sync;
 using MvvX.Plugins.CouchBaseLite.Views;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,10 @@ namespace MvvX.Plugins.CouchBaseLite.Database
         /// Change from the database
         /// </summary>
         event EventHandler<IDatabaseChangeEventArgs> Changed;
+
+        IReplication CreatePushReplication(Uri url);
+
+        IReplication CreatePullReplication(Uri url);
 
         /// <summary>
         /// Permanently deletes a database's file and all its attachments
