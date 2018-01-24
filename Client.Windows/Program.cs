@@ -49,13 +49,16 @@ namespace Client.Windows
                     //Console.WriteLine("Ok");
                     //Console.ReadLine();
 
+                    var username = "<Set username here>";
+                    var password = "<Set password here>";
+
                     var url = new Uri("http://127.0.0.1:8091/");
                     var push = database.CreatePushReplication(url);
-                    var pull = database.CreatePullReplication(url);
-                    var auth = AuthenticatorFactory.CreateBasicAuthenticator(username, password);
-                    push.Authenticator = auth;
-                    pull.Authenticator = auth;
+                    push.SetBasicAuthenticator(username, password);
                     push.Continuous = true;
+
+                    var pull = database.CreatePullReplication(url);
+                    pull.SetBasicAuthenticator(username, password);
                     pull.Continuous = true;
 
                     //// 4. Query

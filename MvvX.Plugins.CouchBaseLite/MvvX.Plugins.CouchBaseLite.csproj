@@ -61,6 +61,7 @@
     <Compile Include="Queries\IQueryEnumerator.cs" />
     <Compile Include="Queries\IQueryRow.cs" />
     <Compile Include="Queries\QueryAllDocsMode.cs" />
+    <Compile Include="ReplicationStatus.cs" />
     <Compile Include="Storages\StorageTypes.cs" />
     <Compile Include="Store\SymmetricKeyType.cs" />
     <Compile Include="Sync\ReplicationChangeEventArgs.cs" />

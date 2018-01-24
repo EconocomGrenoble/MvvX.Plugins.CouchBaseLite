@@ -181,13 +181,13 @@ namespace MvvX.Plugins.CouchBaseLite.Platform.Database
         public IReplication CreatePushReplication(Uri url)
         {
             var replication = this.database.CreatePushReplication(url);
-            return new PlatformReplication(replication);
+            return new PlatformReplication(replication, this);
         }
 
         public IReplication CreatePullReplication(Uri url)
         {
             var replication = this.database.CreatePullReplication(url);
-            return new PlatformReplication(replication);
+            return new PlatformReplication(replication, this);
         }
 
         #endregion

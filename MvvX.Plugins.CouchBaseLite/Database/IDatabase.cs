@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MvvX.Plugins.CouchBaseLite.Database
 {
+    /// <summary>
+    /// A Couchbase Lite Database.
+    /// </summary>
     public interface IDatabase : IDisposable
     {
         /// <summary>
