@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="500" Width="525">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical">
+            <Grid>
+                <TextBlock Text="Login : " VerticalAlignment="Center"/>
+                <TextBox x:Name="LoginTextBox" Width="200"  />
+                <TextBlock Text="Password : " VerticalAlignment="Center"/>
+                <TextBox x:Name="PasswordTextBox" Width="200" />
+            </Grid>
+        </StackPanel>
         
+        <TextBox x:Name="UrlTextBox" Grid.Column="1" Width="200" Height="29" />
+
+        <Button Click="ConnectToCouchbaseSync" 
+                Grid.Row="1" 
+                Grid.ColumnSpan="2" 
+                Margin="20">
+            Connect
+        </Button>
+        <Button Click="PullReplication" 
+                Grid.Row="2" 
+                Grid.ColumnSpan="2" 
+                Margin="20">
+            Pull
+        </Button>
+        <Button Click="PushReplication" 
+                Grid.Row="3" 
+                Grid.ColumnSpan="2" 
+                Margin="20">
+            Push
+        </Button>
+
+        <TextBlock x:Name="ContentTextBlock" />
     </Grid>
 </Window>

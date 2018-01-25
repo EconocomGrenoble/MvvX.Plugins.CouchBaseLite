@@ -93,5 +93,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clients.Tests\Clients.Tests.csproj">
+      <Project>{021C1039-4E38-4518-8B2F-7FF3B6757AEE}</Project>
+      <Name>Clients.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvX.Plugins.CouchBaseLite.WPF\MvvX.Plugins.CouchBaseLite.Wpf.csproj">
+      <Project>{e10e3c57-7e48-41e8-8e38-48963a1e0408}</Project>
+      <Name>MvvX.Plugins.CouchBaseLite.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvX.Plugins.CouchBaseLite\MvvX.Plugins.CouchBaseLite.csproj">
+      <Project>{91272c39-1bbd-4478-bccd-44a4f9edb64d}</Project>
+      <Name>MvvX.Plugins.CouchBaseLite</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
