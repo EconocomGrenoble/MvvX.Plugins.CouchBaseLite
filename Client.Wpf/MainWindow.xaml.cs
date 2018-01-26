@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using MvvX.Plugins.CouchBaseLite;
 using MvvX.Plugins.CouchBaseLite.Database;
+using MvvX.Plugins.CouchBaseLite.Documents;
 using MvvX.Plugins.CouchBaseLite.Platform;
+using Newtonsoft.Json;
 
 namespace Client.Wpf
 {
@@ -53,6 +56,10 @@ namespace Client.Wpf
         private void ConnectToCouchbaseSync(object sender, RoutedEventArgs e)
         {
             InitializeCouchbase();
+            ConnectButton.IsEnabled = false;
+            ContentTextBlock.Text = "Connected to local couchbase instance";
+            DataTabItem.IsEnabled = true;
+            ReloadDataTab();
         }
 
         private void PushReplication(object sender, RoutedEventArgs e)
@@ -60,6 +67,18 @@ namespace Client.Wpf
             url = new Uri(UrlTextBox.Text);
             username = LoginTextBox.Text;
             password = PasswordTextBox.Text;
+
+            var docId = PushId.Text;
+            var docName = PushNameValue.Text;
+
+            var docToUpdate = database.GetDocument(docId);
+
+            docToUpdate.Update((IUnsavedRevision newRevision) =>
+            {
+                var properties = newRevision.Properties;
+                properties["name"] = docName;
+                return true;
+            });
 
             var push = database.CreatePushReplication(url);
             push.SetBasicAuthenticator(username, password);
@@ -90,7 +109,9 @@ namespace Client.Wpf
         /// <param name="e"></param>
         private void Push_Changed(object sender, MvvX.Plugins.CouchBaseLite.Sync.IReplicationChangeEventArgs e)
         {
-            ContentTextBlock.Text += string.Concat("PUSH : ", e.ToString(), "\n");
+            ContentTextBlock.Text = string.Concat("PUSH : ", JsonConvert.SerializeObject(e, Formatting.Indented), "\n");
+            if (e.Status == ReplicationStatus.Idle)
+                ReloadDataTab();
         }
 
         /// <summary>
@@ -100,7 +121,40 @@ namespace Client.Wpf
         /// <param name="e"></param>
         private void Pull_Changed(object sender, MvvX.Plugins.CouchBaseLite.Sync.IReplicationChangeEventArgs e)
         {
-            ContentTextBlock.Text += string.Concat("PULL : ",e.ToString(), "\n");
+            ContentTextBlock.Text = string.Concat("PULL : ", JsonConvert.SerializeObject(e, Formatting.Indented), "\n");
+            if (e.Status == ReplicationStatus.Idle)
+                ReloadDataTab();
+        }
+
+        private void ReloadDataTab()
+        {
+            var allDocQuery = database.CreateAllDocumentsQuery();
+            var queryEnum = allDocQuery.Run();
+
+            IList<Beer> beers = new List<Beer>();
+
+            foreach(var queryRow in queryEnum)
+            {
+                var jsonDict = queryRow.AsJSONDictionary();
+                var beer = new Beer();
+                beer.address = queryRow.Document.CurrentRevision.GetProperty("address") as string[];
+                beer.city = queryRow.Document.CurrentRevision.GetProperty("city") as string;
+                beer.code = queryRow.Document.CurrentRevision.GetProperty("code") as string;
+                beer.country = queryRow.Document.CurrentRevision.GetProperty("country") as string;
+                beer.description = queryRow.Document.CurrentRevision.GetProperty("description") as string;
+                beer.geo = queryRow.Document.CurrentRevision.GetProperty("geo") as Geolocalisation;
+                beer.name = queryRow.Document.CurrentRevision.GetProperty("name") as string;
+                beer.phone = queryRow.Document.CurrentRevision.GetProperty("phone") as string;
+                beer.state = queryRow.Document.CurrentRevision.GetProperty("state") as string;
+                beer.type = queryRow.Document.CurrentRevision.GetProperty("type") as string;
+                DateTime.TryParse(queryRow.Document.CurrentRevision.GetProperty("updated") as string, out DateTime beerDate);
+                beer.updated = beerDate;
+                beer.website = queryRow.Document.CurrentRevision.GetProperty("website") as string;
+
+                beers.Add(beer);
+            }
+
+            DataListBox.ItemsSource = beers;
         }
     }
 }
