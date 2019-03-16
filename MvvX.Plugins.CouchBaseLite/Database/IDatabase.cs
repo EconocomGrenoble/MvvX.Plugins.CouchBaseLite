@@ -36,8 +36,18 @@ namespace MvvX.Plugins.CouchBaseLite.Database
         /// </summary>
         event EventHandler<IDatabaseChangeEventArgs> Changed;
 
+        /// <summary>
+        /// Start push replication object
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         IReplication CreatePushReplication(Uri url);
 
+        /// <summary>
+        /// Start pull replication object
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         IReplication CreatePullReplication(Uri url);
 
         /// <summary>
